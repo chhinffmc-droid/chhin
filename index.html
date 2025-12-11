@@ -11,26 +11,9 @@
     padding: 0;
     overflow: hidden;
     font-family: "Khmer OS Battambang", sans-serif;
-    background: #ffffff;
+    background: #ff55;
   }
-
-  /* Angkor Wat background */
-  .bg-angkor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 130%;
-    height: 130%;
-    background: url("angkor.png") center/contain no-repeat;
-    animation: angkorMove 20s ease-in-out infinite alternate;
-    opacity: 0.95;
-    z-index: 1;
-  }
-
-  @keyframes angkorMove {
-    0% { transform: translateX(-40px) scale(1.05); }
-    100% { transform: translateX(40px) scale(1.1); }
-  }
+  
 
   /* Falling Flower Container */
   .flowers {
@@ -46,9 +29,9 @@
   .flower {
     position: absolute;
     top: -50px;
-    font-size: 30px;
-    animation: fall 7s linear infinite;
-    opacity: 0.8;
+    font-size: 10px;
+    animation: fall 3s linear infinite;
+    opacity: 0.6;
   }
 
   @keyframes fall {
@@ -105,7 +88,7 @@
   function createFlower() {
     const flower = document.createElement("div");
     flower.classList.add("flower");
-    flower.innerHTML = "🌸"; // អ្នកអាចប្តូរទៅ <img src="flower.png">
+    flower.innerHTML = "📄"; // អ្នកអាចប្តូរទៅ <img src="flower.png">
     
     flower.style.left = Math.random() * 100 + "vw";
     flower.style.animationDuration = (5 + Math.random() * 5) + "s";
