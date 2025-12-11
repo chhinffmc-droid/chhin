@@ -1,14 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>download plugin & skript zip</title>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: "Khmer OS Battambang", sans-serif;
+    background: #ffffff;
+  }
+
+  /* Angkor Wat background */
+  .bg-angkor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 130%;
+    height: 130%;
+    background: url("angkor.png") center/contain no-repeat;
+    animation: angkorMove 20s ease-in-out infinite alternate;
+    opacity: 0.95;
+    z-index: 1;
+  }
+
+  @keyframes angkorMove {
+    0% { transform: translateX(-40px) scale(1.05); }
+    100% { transform: translateX(40px) scale(1.1); }
+  }
+
+  /* Falling Flower Container */
+  .flowers {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .flower {
+    position: absolute;
+    top: -50px;
+    font-size: 30px;
+    animation: fall 7s linear infinite;
+    opacity: 0.8;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+
+  /* Content */
+  .content {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    margin-top: 130px;
+    color: #000000;
+    text-shadow: 0 0 8px #ff0;
+  }
+
+  .download-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 15px 30px;
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #d9a200, #ffcf4d);
+    color: #4b2d00;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  }
+
+  .download-btn:hover {
+    background: linear-gradient(90deg, #ffd87a, #ffcc51);
+  }
+</style>
+</head>
+
 <body>
-  
-<h1 style="background-color: blue;">playgame</h2>
-<p><h1>plugin</p>
-<p><button><a href="https://filebin.net/vnzw3ozrt1oz6o0i/ClearRaid.jar"><h1>ClearRaid</a><p>plugin
 
-<p><button><a href="https://filebin.net/saw3n75wgi8mb9bh/tpagui.sk"><h1>tpagui.sk</a><p>skript click
-<p><button><a href="https://filebin.net/saw3n75wgi8mb9bh/EcoPets%20v2.77.0.jar"><h2>EcoPets</a><p>plugin click<p><button><a href="https://filebin.net/saw3n75wgi8mb9bh/EcoPets%20v2.77.0.jar"><h1><h2>Eco</a></p>plugin click
+<div class="bg-angkor"></div>
+<div class="flowers"></div>
 
+<div class="content">
+  <h1>antispam.sk ជា zip</h1>
+  <p>អ្នកអាចដោនបាន # ខ្ញុំបាទឈ្មោះ ឈីនលុង</p>
+  <a href="https://filebin.net/yt5chwdwr0l30knb/antispam.zip" download class="download-btn">✓ Download File</a>
+</div>
+<div class="content">
+  <h1>tpagui.sk ជា zip</h1>
+  <p>អ្នកអាចដោនបាន # ខ្ញុំបាទឈ្មោះ ឈីលុង</p>
+  <a href="https://filebin.net/yt5chwdwr0l30knb/tpagui.zip" download class="download-btn">✓ Download File</a>
+</div>
+
+<script>
+  function createFlower() {
+    const flower = document.createElement("div");
+    flower.classList.add("flower");
+    flower.innerHTML = "🌸"; // អ្នកអាចប្តូរទៅ <img src="flower.png">
+    
+    flower.style.left = Math.random() * 100 + "vw";
+    flower.style.animationDuration = (5 + Math.random() * 5) + "s";
+    flower.style.fontSize = (20 + Math.random() * 20) + "px";
+    
+    document.querySelector(".flowers").appendChild(flower);
+    
+    setTimeout(() => {
+      flower.remove();
+    }, 8000);
+  }
+
+  setInterval(createFlower, 300);
+</script>
 
 </body>
 </html>
