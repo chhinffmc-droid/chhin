@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="km">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>download plugin & skript zip</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>download plugin & skript zip</title>
 
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    font-family: "Khmer OS Battambang", sans-serif;
-    background: #ff55;
-  }
-  
+    <style>
+    body {
+      font-family: "Khmer OS Battambang", sans-serif;
+      background: #f6efe3;
+      padding: -1px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    }
 
   /* Falling Flower Container */
   .flowers {
@@ -23,15 +29,15 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 3;
+    z-index: 1;
   }
 
   .flower {
     position: absolute;
     top: -50px;
-    font-size: 10px;
-    animation: fall 3s linear infinite;
-    opacity: 0.6;
+    font-size: 2px;
+    animation: fall 10s linear infinite;
+    opacity: 0.3;
   }
 
   @keyframes fall {
@@ -73,26 +79,44 @@
 <div class="bg-angkor"></div>
 <div class="flowers"></div>
 
-<div class="content">
+<div class="card">
   <h1>ហ្គេមផ្កាយ</h1>
   <p>អ្នកអាចលេងបាន # ខ្ញុំបាទឈ្មោះ ឈីនលុង</p>
   <a href="game.html" class="download-btn">✓ click game</a>
-<div class="content">
+<div class="card">
   <h1>antispam.sk ជា zip</h1>
   <p>អ្នកអាចដោនបាន # ខ្ញុំបាទឈ្មោះ ឈីនលុង</p>
   <a href="https://filebin.net/yt5chwdwr0l30knb/antispam.zip" download class="download-btn">✓ Download File</a>
 </div>
-<div class="content">
+<div class="card">
   <h1>tpagui.sk ជា zip</h1>
   <p>អ្នកអាចដោនបាន # ខ្ញុំបាទឈ្មោះ ឈីងលុង</p>
   <a href="https://filebin.net/yt5chwdwr0l30knb/tpagui.zip" download class="download-btn">✓ Download File</a>
 </div>
+  <div class="card">
+    <h2>📥 File No</h2>
+    <p>ចុចខាងក្រោម ដើម្បីដោនឡូតឯកសារដែលយើងរៀបចំស្រាប់</p>
+
+    <!-- ADMIN sets the file here -->
+    <a class="download-btn" href="myfile.zip" download>
+      No download
+    </a>
+  </div>
+    <div class="card">
+    <h2>📥 File No</h2>
+    <p>ចុចខាងក្រោម ដើម្បីដោនឡូតឯកសារដែលយើងរៀបចំស្រាប់</p>
+
+    <!-- ADMIN sets the file here -->
+    <a class="download-btn" href="myfile.zip" download>
+      No download
+    </a>
+  </div>
 
 <script>
   function createFlower() {
     const flower = document.createElement("div");
     flower.classList.add("flower");
-    flower.innerHTML = "📄"; // អ្នកអាចប្តូរទៅ <img src="flower.png">
+    flower.innerHTML = "★"; // អ្នកអាចប្តូរទៅ <img src="flower.png">
     
     flower.style.left = Math.random() * 100 + "vw";
     flower.style.animationDuration = (5 + Math.random() * 5) + "s";
