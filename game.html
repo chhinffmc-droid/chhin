@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="km">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ហ្គេម Catch the Stars</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#0f1a2b;
+      --accent:#ffd166;
+      --muted:#9fb3c8;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Khmer OS", sans-serif;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,209,102,0.06), transparent),
+                  linear-gradient(180deg,#071021 0%, #08132a 60%);
+      color:#eaf2ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      gap:20px;
+    }
+
+    .game-wrap{
+      width:100%;
+      max-width:900px;
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:14px;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .stage{
+      aspect-ratio: 16/10;
+      width:100%;
+      border-radius:10px;
+      overflow:hidden;
+      background: linear-gradient(180deg,#041226,#06132a 60%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    canvas{display:block; width:100%; height:100%;}
+
+    .sidebar{height:100%;}
+    h1{font-size:18px;margin:6px 0 8px}
+    .stats{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+    .stat{display:flex;justify-content:space-between;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)}
+    .controls{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+    button{
+      background:var(--accent);
+      border:0;color:#0a0a0a;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer;
+      box-shadow: 0 6px 16px rgba(255,209,102,0.12);
+    }
+    button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);box-shadow:none}
+    .hint{font-size:13px;color:var(--muted);margin-top:8px}
+
+    /* mobile: stack */
+    @media (max-width:880px){
+      .game-wrap{grid-template-columns: 1fr; max-width:420px}
+      .sidebar{order:2}
+    }
+    .footer-hint{font-size:12px;color:#98b0c5;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="game-wrap">
+    <div class="card">
+      <h1>Catch the Stars ⭐ (ចាប់ផ្កាយ)</h1>
+      <div class="stage" id="stage">
+        <canvas id="game"></canvas>
+      </div>
+      <div class="hint">គ្រប់គ្រង: ← → ឬ A / D. លើទូរស័ព្ទ ចុចផ្នែកឆ្វេង/ស្ដាំ។</div>
+      <div class="footer-hint">រកព្រះចន្ទ និងផ្កាយ សម្រាប់ពិន្ទុ — កុំអោយវាចុះចូលក្នុងភពផ្ទាល់ខ្លួន!</div>
+    </div>
+
+    <div class="card sidebar">
+      <h1>ផ្ទៃព័ត៌មាន</h1>
+      <div class="stats">
+        <div class="stat"><span>ពិន្ទុ</span><strong id="score">0</strong></div>
+        <div class="stat"><span>ជីវិត</span><strong id="lives">10</strong></div>
+        <div class="stat"><span>លំនាំល្បឿន</span><strong id="level">1</strong></div>
+        <div class="stat"><span>រយៈពេល</span><strong id="time">60</strong></div>
+      </div>
+
+      <div class="controls">
+        <button id="startBtn">ចាប់ផ្តើម/Restart</button>
+        <button id="pauseBtn" class="ghost">បិទ-បើក</button>
+        <button id="muteBtn" class="ghost">Mute</button>
+      </div>
+
+      <p class="hint">ទាញប្លុកចុចដើម្បីចាប់ផ្ដើម។ ពេលលេងបានច្រើន ព្រះចន្ទនឹងចុះលឿន។</p>
+
+      <h1 style="margin-top:12px">ច្បាប់សង្ខេប</h1>
+      <ul style="margin:8px 0 0 18px;color:var(--muted)">
+        <li>ចាប់ផ្កាយ (សាច់) ដើម្បីបានពិន្ទុ</li>
+        <li>បញ្ឆោតវាឲ្យចុះក្រោមទូទៅ = បាត់ជីវិត</li>
+        <li>ពិន្ទុបន្ថែមសម្រាប់ combo / ការចាប់ជាប់ជាលំដាប់</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Canvas setup
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+
+    // Resize canvas to device pixel ratio
+    function fitCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener('resize', fitCanvas);
+
+    // Game state
+    let w, h;
+    let running = false;
+    let paused = false;
+    let mute = false;
+    let lastT = 0;
+    let spawnTimer = 0;
+    let spawnInterval = 1000; // ms
+    let items = [];
+    let player;
+    let score = 0;
+    let lives = 10;
+    let level = 1;
+    let timeLeft = 60; // seconds
+    let combo = 0;
+    let comboTimer = 0;
+
+    // UI elements
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+    const levelEl = document.getElementById('level');
+    const timeEl = document.getElementById('time');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const muteBtn = document.getElementById('muteBtn');
+
+    startBtn.addEventListener('click', startGame);
+    pauseBtn.addEventListener('click', () => {
+      paused = !paused;
+      pauseBtn.textContent = paused ? 'បន្ត' : 'បិទ-បើក';
+      if(!paused) lastT = performance.now();
+    });
+    muteBtn.addEventListener('click', () => {
+      mute = !mute;
+      muteBtn.textContent = mute ? 'Unmute' : 'Mute';
+    });
+
+    // Player object
+    function createPlayer(){
+      return {
+        x: 0.5,
+        y: 0.9,
+        width: 0.18,
+        height: 0.06,
+        speed: 1.6,
+        vx:0
+      };
+    }
+
+    // Utility: random
+    const rand = (a,b) => Math.random()*(b-a)+a;
+
+    // Item types: star (good), rock (bad)
+    function spawnItem() {
+      const kind = Math.random() < 0.82 ? 'star' : 'rock';
+      const size = kind === 'star' ? rand(0.03, 0.06) : rand(0.05,0.09);
+      const x = rand(size/2, 1 - size/2);
+      const speedBase = 0.25 + level*0.08;
+      const y = -size;
+      items.push({kind,x,y,size,vy: speedBase + Math.random()*0.2});
+    }
+
+    // Input handling
+    const keys = {};
+    window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+    window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+    // Touch controls: touch left/right halves
+    const stage = document.getElementById('stage');
+    stage.addEventListener('pointerdown', (e) => {
+      const rect = stage.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      if(px < 0.5) keys['arrowleft']=true, keys['a']=true;
+      else keys['arrowright']=true, keys['d']=true;
+    });
+    stage.addEventListener('pointerup', () => { keys['arrowleft']=keys['a']=keys['arrowright']=keys['d']=false; });
+
+    // Sound (simple beep using WebAudio)
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+    function beep(freq=440, time=0.08, vol=0.06) {
+      if(mute) return;
+      if(!AudioCtx) return;
+      if(!audioCtx) audioCtx = new AudioCtx();
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = freq;
+      g.gain.value = vol;
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start();
+      o.stop(audioCtx.currentTime + time);
+    }
+
+    // Game loop
+    function loop(t){
+      if(!running) return;
+      if(paused){ requestAnimationFrame(loop); return; }
+      const dt = Math.min(40, t - lastT);
+      lastT = t;
+
+      update(dt/1000);
+      render();
+
+      requestAnimationFrame(loop);
+    }
+
+    // Update logic
+    function update(dt){
+      // timers
+      spawnTimer += dt*1000;
+      if(spawnTimer > spawnInterval){
+        spawnTimer = 0;
+        spawnItem();
+      }
+
+      // level increases over time or score
+      level = 1 + Math.floor(score / 50);
+      levelEl.textContent = level;
+
+      // player movement
+      player.vx = 0;
+      if(keys['arrowleft'] || keys['a']) player.vx = -player.speed;
+      if(keys['arrowright'] || keys['d']) player.vx = player.speed;
+      player.x += player.vx * dt;
+      player.x = Math.max(player.width/2, Math.min(1 - player.width/2, player.x));
+
+      // update items
+      for(let i = items.length-1; i>=0; i--){
+        const it = items[i];
+        it.y += it.vy * dt * (1 + (level-1)*0.12);
+        // check collision with player
+        const px = player.x;
+        const py = player.y;
+        const w = player.width;
+        const h = player.height;
+        const ix = it.x;
+        const iy = it.y;
+        const iw = it.size;
+        const ih = it.size;
+        // simple AABB in normalized coords
+        if(ix+iw/2 > px-w/2 && ix-iw/2 < px+w/2 && iy+ih/2 > py-h/2 && iy-ih/2 < py+h/2){
+          // caught
+          if(it.kind === 'star'){
+            score += 10 + Math.max(0, Math.floor(combo/5))*5;
+            combo++;
+            comboTimer = 2.0;
+            beep(880,0.06,0.08);
+          } else {
+            // rock: lose life and reset combo
+            lives -= 1;
+            combo = 0;
+            beep(180,0.15,0.09);
+            if(lives <= 0) {
+              endGame();
+            }
+          }
+          items.splice(i,1);
+          updateUI();
+          continue;
+        }
+        // off-screen (missed)
+        if(it.y - it.size/2 > 1){
+          if(it.kind === 'star'){
+            lives -= 1;
+            combo = 0;
+            if(lives <= 0){
+              endGame();
+            }
+            updateUI();
+          }
+          items.splice(i,1);
+        }
+      }
+
+      // combo timeout
+      if(combo > 0){
+        comboTimer -= dt;
+        if(comboTimer <= 0) combo = 0;
+      }
+
+      // time left countdown
+      timeLeft -= dt;
+      if(timeLeft <= 0){
+        endGame(true); // time up -> win/score
+      }
+
+      // slowly shorten spawnInterval as level increases
+      spawnInterval = Math.max(350, 1000 - (level-1)*80);
+    }
+
+    function updateUI(){
+      scoreEl.textContent = score;
+      livesEl.textContent = lives;
+      timeEl.textContent = Math.max(0, Math.floor(timeLeft));
+    }
+
+    // Render
+    function render(){
+      const rect = canvas.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+      // clear
+      ctx.clearRect(0,0,w,h);
+
+      // draw background stars
+      drawBackground();
+
+      // draw items
+      for(const it of items) drawItem(it);
+
+      // draw player (basket)
+      drawPlayer();
+
+      // draw HUD overlay (combo)
+      if(combo >= 3){
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.font = "bold 18px system-ui, sans-serif";
+        ctx.fillStyle = "#ffd166";
+        const txt = `Combo x${combo}`;
+        ctx.fillText(txt, 14, 28);
+        ctx.restore();
+      }
+    }
+
+    function drawBackground(){
+      // subtle moving gradient / stars
+      ctx.save();
+      // small twinkling dots
+      const dotCount = 40;
+      for(let i=0;i<dotCount;i++){
+        const x = (i * 197.3 % 1) * w;
+        const y = ((i * 13.7 + performance.now()*0.0002*i) % 1) * h;
+        const r = (i % 3) + 0.4;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${0.05 + (i%3)*0.02})`;
+        ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawItem(it){
+      const X = it.x * w;
+      const Y = it.y * h;
+      const S = it.size * Math.min(w,h);
+
+      if(it.kind === 'star'){
+        // draw star shape
+        ctx.save();
+        ctx.translate(X,Y);
+        ctx.rotate(Math.sin((it.y+performance.now()*0.0005)*10)*0.3);
+        ctx.beginPath();
+        const spikes = 5;
+        const outer = S*0.6;
+        const inner = outer*0.45;
+        for(let i=0;i<spikes;i++){
+          const a = (i / spikes) * Math.PI*2;
+          ctx.lineTo(Math.cos(a)*outer, Math.sin(a)*outer);
+          ctx.lineTo(Math.cos(a + Math.PI/spikes)*inner, Math.sin(a + Math.PI/spikes)*inner);
+        }
+        ctx.closePath();
+        const g = ctx.createLinearGradient(-S, -S, S, S);
+        g.addColorStop(0,'#fff2c8');
+        g.addColorStop(1,'#ffd166');
+        ctx.fillStyle = g;
+        ctx.fill();
+        ctx.restore();
+      } else {
+        // rock: simple dark circle with shadow
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = "#9aa6b2";
+        ctx.shadowColor = "rgba(0,0,0,0.5)";
+        ctx.shadowBlur = 8;
+        ctx.arc(X,Y,S*0.5,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function drawPlayer(){
+      const px = player.x * w;
+      const py = player.y * h;
+      const pw = player.width * w;
+      const ph = player.height * h;
+
+      // basket base
+      ctx.save();
+      ctx.beginPath();
+      ctx.fillStyle = "#2b7a78";
+      roundRect(ctx, px - pw/2, py - ph/2, pw, ph, ph*0.25);
+      ctx.fill();
+
+      // rim
+      ctx.beginPath();
+      ctx.fillStyle = "#ffd166";
+      ctx.rect(px - pw/2, py - ph/2 - ph*0.18, pw, ph*0.18);
+      ctx.fill();
+
+      // shadow
+      ctx.globalAlpha = 0.2;
+      ctx.fillStyle = "#000";
+      ctx.ellipse(px, py+ph*0.9, pw*0.45, ph*0.45, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.moveTo(x+radius, y);
+      ctx.arcTo(x+width, y, x+width, y+height, radius);
+      ctx.arcTo(x+width, y+height, x, y+height, radius);
+      ctx.arcTo(x, y+height, x, y, radius);
+      ctx.arcTo(x, y, x+width, y, radius);
+    }
+
+    // End game
+    function endGame(timeUp=false){
+      running = false;
+      paused = false;
+      updateUI();
+      // show result overlay using simple alert (keeps code small)
+      setTimeout(()=> {
+        const msg = timeUp ? `ពេលវេលា​លប់! ពិន្ទុ​របស់អ្នក: ${score}` : `Game Over! ពិន្ទុ: ${score}`;
+        if(!mute) beep(260,0.4,0.12);
+        alert(msg + "\nចុច OK ដើម្បីចាប់ផ្តើមម្តងទៀត");
+        startGame();
+      }, 60);
+    }
+
+    // Start / reset
+    function startGame(){
+      // initialize
+      fitCanvas();
+      items = [];
+      player = createPlayer();
+      player.x = 0.5;
+      player.y = 0.88;
+      score = 0;
+      lives = 10;
+      level = 1;
+      timeLeft = 60;
+      combo = 0;
+      comboTimer = 0;
+      spawnTimer = 0;
+      spawnInterval = 1000;
+      running = true;
+      paused = false;
+      lastT = performance.now();
+      updateUI();
+      requestAnimationFrame(loop);
+    }
+
+    // initial fit
+    fitCanvas();
+    // auto-start hint: wait for user action
+    // but provide a click-start overlay by hooking start button only
+
+    // Accessibility: keyboard focus on start
+    startBtn.focus();
+
+    // Start on first user interaction (mobile browsers require user gesture to enable audio)
+    function enableAudioOnInteract(){
+      if(!audioCtx && (window.AudioContext || window.webkitAudioContext)){
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Small silent buffer to resume context
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.frequency.value = 0;
+        g.gain.value = 0;
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(); o.stop(audioCtx.currentTime + 0.01);
+      }
+      window.removeEventListener('pointerdown', enableAudioOnInteract);
+      window.removeEventListener('keydown', enableAudioOnInteract);
+    }
+    window.addEventListener('pointerdown', enableAudioOnInteract);
+    window.addEventListener('keydown', enableAudioOnInteract);
+
+    // Auto scale when DOM loaded
+    window.addEventListener('load', ()=> {
+      fitCanvas();
+    });
+
+  </script>
+</body>
+</html>
