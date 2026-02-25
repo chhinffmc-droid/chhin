@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>COOKIEMC ONLINE</title>
+<link rel="icon" type="image/png" href="cookiemc.jpg" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"Poppins",sans-serif;
+  background:linear-gradient(180deg,#fff,#fff0f6);
+  color:#222;text-align:center;overflow-x:hidden;
+}
+
+/* HEADER */
+.header-gradient{
+  background:linear-gradient(180deg,#BDB946 0%,#88993A 40%,#889977 100%);
+  min-height:420px;
+  display:flex;flex-direction:column;justify-content:flex-start;align-items:center;
+  position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+.header-gradient::after{
+  content:"";position:absolute;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(circle at center,rgba(255,255,255,0.3),transparent 70%);
+  animation:pulseGlow 4s infinite ease-in-out;
+}
+@keyframes pulseGlow{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* NAVBAR */
+.navbar{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  display:flex;justify-content:center;flex-wrap:wrap;gap:25px;padding:18px 0;z-index:10;
+}
+.navbar a{
+  color:#fff;text-decoration:none;font-weight:600;
+  padding:8px 16px;border-radius:10px;transition:.3s;opacity:0;
+  animation:fadeInMenu 1.5s ease forwards;
+}
+@keyframes fadeInMenu{to{opacity:1;transform:translateY(0);}}
+.navbar a:hover{background:rgba(255,255,255,0.3);}
+
+/* LOGO */
+.header-logo{position:relative;top:100px;z-index:1;}
+.header-logo img{
+  width:240px;border-radius:25px;
+  filter:drop-shadow(0 0 35px rgba(255,182,193,0.8));
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+/* MENU TOGGLE (ទូរស័ព្ទ) */
+.menu-toggle{
+  display:none;position:fixed;top:15px;left:15px;font-size:28px;
+  background:none;border:none;color:#fff;z-index:1100;cursor:pointer;
+}
+.sidebar{
+  position:fixed;top:0;left:-260px;width:240px;height:100%;
+  background:linear-gradient(to bottom,#88993A,#BDB946);
+  transition:left .3s ease;box-shadow:2px 0 10px rgba(0,0,0,.3);
+  z-index:1050;padding-top:60px;
+}
+.sidebar.show{left:0;}
+.sidebar a{
+  display:block;color:#fff;padding:15px 25px;text-align:left;
+  font-weight:bold;text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+}
+.sidebar a:hover{background:#ffccff;color:#000;}
+
+/* ONLINE SECTION */
+section#online {padding:60px 20px;}
+#online h1 {
+  color:#88993A;font-size:2rem;margin-bottom:10px;
+  text-shadow:0 0 8px rgba(255,105,180,0.4);
+  animation:glowPink 2s ease-in-out infinite alternate;
+}
+@keyframes glowPink{from{text-shadow:0 0 10px #88993A;}to{text-shadow:0 0 25px #ffb6d9;}}
+#status{font-size:1.2rem;margin-bottom:15px;color:#444;}
+
+#players {
+  display:grid;
+  grid-template-columns:repeat(1,1fr);
+  gap:15px;max-width:1100px;margin:auto;padding:10px;
+}
+@media(min-width:1024px){
+  #players{grid-template-columns:repeat(3,1fr);}
+}
+
+/* PLAYER CARD + ភ្លើងអគីចលនា */
+.player {
+  position:relative;
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border:2px solid #BDB946;border-radius:14px;
+  padding:10px 15px;box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  overflow:hidden;transition:0.3s;
+}
+.player:hover{transform:translateY(-3px);box-shadow:0 6px 15px rgba(0,0,0,0.3);}
+
+/* ភ្លើងក្រហម និងផ្កាឈូក */
+.player::before, .player::after{
+  content:"";position:absolute;top:0;left:-150%;width:150%;height:100%;
+  z-index:0;opacity:0.8;
+}
+.player::before{
+  background:linear-gradient(120deg,transparent,rgba(255,0,0,0.4),transparent);
+  animation:fireRed 2.5s linear infinite;
+}
+.player::after{
+  background:linear-gradient(120deg,transparent,rgba(255,105,180,0.4),transparent);
+  animation:firePink 3.3s linear infinite;
+}
+@keyframes fireRed{0%{left:-150%;}50%{left:100%;}100%{left:-150%;}}
+@keyframes firePink{0%{left:100%;}50%{left:-150%;}100%{left:100%;}}
+
+.player-info{display:flex;align-items:center;gap:10px;z-index:1;}
+.player img{width:45px;height:45px;border-radius:10px;box-shadow:0 0 10px rgba(255,182,193,0.8);}
+.player-name{font-weight:600;font-size:1rem;color:#111;}
+.tag{font-size:0.7rem;padding:3px 7px;border-radius:8px;margin-left:6px;font-weight:bold;color:#fff;}
+.java{background:#ff69b4;}
+.bedrock{background:#ff99cc;}
+.ping{font-weight:600;color:#e91e63;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(180deg,#000,#1a1a1a);
+  color:#fff;text-align:center;padding:30px 10px;
+  line-height:1.8;font-size:14px;border-top:2px solid #ffb6c1;margin-top:60px;
+}
+footer a{color:#ffb6c1;text-decoration:none;}
+.social-icons{display:flex;justify-content:center;gap:20px;margin:15px 0;}
+.social-icons img{width:40px;height:40px;border-radius:50%;transition:.3s;}
+.social-icons img:hover{transform:scale(1.2);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .navbar{display:none;}
+  .menu-toggle{display:block;}
+}
+</style>
+</head>
+<body>
+
+<!-- ☰ MENU -->
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="sidebar" id="mobileSidebar">
+  <a href="homes.html" onclick="closeSidebar()"><h1>HOME</a>
+</div>
+
+<!-- HEADER -->
+<header class="header-gradient fade-in">
+  <nav class="navbar">
+    <a href="homes.html">HOME</a>
+    <a href="vote.html">VOTE</a>
+    <a href="https://t.me/nokormc" target="_blank">HELP</a>
+    <a href="admin.html">STAFF</a>
+    <a href="download.html">DOWNLOAD</a>
+    <a href="#">SOON</a>
+  </nav>
+  <div class="header-logo">
+    <img src="cookiemc.jpg" alt="Logo" />
+  </div>
+</header>
+
+<!-- ONLINE PLAYERS -->
+<section id="online">
+  <h1>PLAYERS ONLINE</h1>
+  <div id="status">កំពុងភ្ជាប់ទៅ Server...</div>
+  <div id="players"></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="fade-in">
+  <div class="social-icons">
+    <a href="https://discord.gg/zacuya4kA"><img src="discord.jpg" alt="Discord"></a>
+    <a href="https://www.tiktok.com/@cookiemc_forever"><img src="tiktok.jpg" alt="TikTok"></a>
+    <a href="https://t.me/cookiemc4"><img src="telegram.jpg" alt="Telegram"></a>
+  </div>
+  <span>© 2024 - 2026 COOKIEMC All Rights Reserved.</span><br>
+  <span>Support Email: <a href="mailto:chhinffmc@gmail.com">chhinffmc@gmail.com</a></span><br>
+  <span>Theme created by: <b>CHHIN</b> & <b>CHANE VICHARA</b></span><br>
+  <span>Version: <b>2.2.4</b></span>
+</footer>
+
+<script>
+/* Sidebar */
+const sidebar=document.getElementById("mobileSidebar");
+function toggleSidebar(){sidebar.classList.toggle("show");}
+function closeSidebar(){sidebar.classList.remove("show");}
+window.addEventListener("click",(e)=>{if(!e.target.closest(".menu-toggle")&&!e.target.closest(".sidebar"))sidebar.classList.remove("show");});
+
+/* ONLINE PLAYERS */
+const apiUrl="https://api.mcstatus.io/v2/status/java/160.187.211.41:55039";
+const pingCache={};
+
+async function updatePlayers(){
+  const status=document.getElementById("status");
+  const listBox=document.getElementById("players");
+  try{
+    const res=await fetch(`${apiUrl}?t=${Date.now()}`,{cache:"no-store"});
+    const data=await res.json();
+    if(!data?.online){status.innerText="❌ Server Offline";listBox.innerHTML="";setTimeout(updatePlayers,100);return;}
+    const total=data.players?.online||0;
+    const max=data.players?.max||0;
+    const players=data.players?.list||[];
+    status.innerText=`🟢 Online: ${total}/${max}`;
+    listBox.innerHTML="";
+    if(players.length===0){
+      listBox.innerHTML=`<p style="color:#888;">មិនមានអ្នកលេងនៅលើបណ្តាញ 💤</p>`;
+    }else{
+      players.forEach(pl=>{
+        const name=pl.name_clean||pl.name_raw||"Unknown";
+        const isBedrock=name.includes(".");
+        const skin=isBedrock?"https://mineskin.eu/helm/steve":`https://mineskin.eu/helm/${encodeURIComponent(name)}`;
+        if(!pingCache[name])pingCache[name]=Math.floor(Math.random()*70)+50;
+        let ping=pingCache[name]+(Math.random()*5-2.5);
+        ping=Math.max(30,Math.min(300,ping));
+        pingCache[name]=ping;
+        const pingColor=ping>180?"#ff4444":ping>120?"#ffaa00":"#00cc00";
+        const el=document.createElement("div");
+        el.className="player";
+        el.innerHTML=`
+          <div class="player-info">
+            <img src="${skin}" alt="${name}">
+            <span class="player-name">${name}</span>
+            <span class="tag ${isBedrock?"bedrock":"java"}">${isBedrock?"Bedrock":"Java"}</span>
+          </div>
+          <span class="ping" style="color:${pingColor}">${ping.toFixed(0)} ms</span>
+        `;
+        listBox.appendChild(el);
+      });
+    }
+  }catch{
+    status.innerText="⚠️ ការភ្ជាប់បាត់បង់...";
+  }
+  setTimeout(updatePlayers,100); // Real-time 0.1s
+}
+updatePlayers();
+</script>
+</body>
+</html>

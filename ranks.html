@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>COOKIEMC</title>
+  <link rel="icon" type="image/png" href="cookiemc.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ranks.css" />
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+<div class="sidebar" id="mobileSidebar">
+  <a href="homes.html"><h1>HOME</a>
+</div>
+
+<div class="header-gradient fade-in">
+  <div class="navbar">
+    <a href="homes.html">HOME</a>
+  </div>
+  <div class="header-logo">
+    <img src="cookiemc.jpg" alt="Logo" />
+  </div>
+</div>
+
+<main class="main-section fade-in">
+  <h2>STORE-RANK</h2>
+
+  <section class="store" id="storeMain" aria-label="Rank Store">
+    <h3 class="store-title"></h3>
+
+    <div class="ranks-grid" id="ranksGrid">
+      <article class="card" data-price="3" data-qr="qr.jpg" data-rank="RANK APPLE">
+        <img src="apple.jpg" alt="APPLE rank">
+        <h4>RANK APPLE</h4>
+        <div class="price">3$</div>
+        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
+        </article>
+
+      <article class="card" data-price="5" data-qr="qr.jpg" data-rank="RANK POTATO">
+        <img src="potato.jpg" alt="MVP rank">
+        <h4>RANK POTATO</h4>
+        <div class="price">5$</div>
+        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
+        </article>
+
+      <article class="card" data-price="7" data-qr="qr.jpg" data-rank="RANK CARROT">
+        <img src="carrot.jpg" alt="King rank">
+        <h4>RANK CARROT</h4>
+        <div class="price">7$</div>
+        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
+        </article>
+
+      <article class="card" data-price="10" data-qr="qr.jpg" data-rank="RANK COOKIE">
+        <img src="cookie.jpg" alt="Master rank">
+        <h4>RANK COOKIE</h4>
+        <div class="price">10$</div>
+        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
+      </article>
+    </div>
+  </section>
+</main>
+
+<!-- Buy Modal (ដូចដែលនៅ ranks) -->
+<div id="buyModal" class="modal" aria-hidden="true">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <h2>COOKIEMC RANK</h2>
+      <button class="close" id="modalClose">×</button>
+    </div>
+
+       <a href="https://t.me/SOPANHA1213" >Telegram</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Success modal -->
+<div id="successModal" class="success-box" aria-hidden="true">
+  <div class="success-card">
+    <div class="check">✔</div>
+    <h3>សូមអគុណ🙏</h3>
+    <p>សំណើរទិញរបស់អ្នកត្រូវបានដាក់ស្នើ។<br>សូមរងចាំ 1 ម៉ោងសម្រាប់ការត្រួតពិនិត្យ។</p>
+    <button id="successClose" class="submit-btn">Close</button>
+  </div>
+</div>
+
+<!-- Footer (ដូចដើម) -->
+<footer class="fade-in">
+  <div class="social-icons">
+    <a href="https://discord.gg/zacuya4kA"><img src="discord.jpg" alt="Discord"></a>
+    <a href="https://www.tiktok.com/@cookiemc_forever"><img src="tiktok.jpg" alt="TikTok"></a>
+    <a href="https://t.me/cookiemc4"><img src="telegram.jpg" alt="Telegram"></a>
+  </div>
+  <span>© 2024 - 2026 COOKIEMC All Rights Reserved.</span><br>
+  <span>Support Email: <a href="mailto:chhinffmc@gmail.com">chhinffmc@gmail.com</a></span><br>
+  <span>Theme created by: <b>CHHIN</b> & <b>CHANE VICHARA</b></span><br>
+  <span>Version: <b>2.2.4</b></span>
+</footer>
+</footer>
+
+<script src="ranks.js"></script>
+</body>
+</html>

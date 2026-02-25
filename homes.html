@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>COOKIEMC — Homes</title>
+  <link rel="icon" href="cookiemc.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Battambang&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="homes.css" />
+</head>
+<body>
+
+  <!-- Snow Background -->
+  <canvas id="snowCanvas"></canvas>
+
+  <!-- TOP CONTROLS -->
+  <div class="top-controls">
+
+    <!-- LANGUAGE -->
+    <div class="lang-wrap">
+      <button id="langBtn" class="lang-btn">EN 🌐</button>
+      <div id="langDrop" class="lang-drop">
+        <button data-lang="en">🇬🇧 English</button>
+        <button data-lang="km">🇰🇭 ភាសាខ្មែរ</button>
+      </div>
+    </div>
+
+    <!-- THEME -->
+    <label class="switch">
+      <input id="themeToggle" type="checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <button id="mobileMenu" class="menu-btn">☰</button>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-head">
+      <img src="cookiemc.jpg" class="side-logo">
+      <button id="closeSidebar" class="close-btn">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="homes.html" data-i18n="nav_home">HOME</a>
+      <a href="https://t.me/drskript" target="_blank" data-i18n="nav_help">HELP</a>
+      <a href="ranks.html" data-i18n="nav_rank">RANK</a>
+      <a href="admin.html" data-i18n="nav_staff">STAFF</a>
+    </nav>
+  </aside>
+
+  <!-- DESKTOP NAV -->
+  <nav class="desktop-nav">
+    <a href="homes.html" data-i18n="nav_home">HOME</a>
+    <a href="https://t.me/SOPANHA1213" data-i18n="nav_help">HELP</a>
+    <a href="ranks.html" data-i18n="nav_rank">RANK</a>
+    <a href="admin.html" data-i18n="nav_staff">STAFF</a>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="hero">
+    <div class="brand">
+      <img src="cookiemc.jpg" class="logo-lg">
+      <div>
+        <h1 data-i18n="brand_title">COOKIEMC</h1>
+        <p class="muted" data-i18n="brand_java">Minecraft Java • Community Server</p>
+        <p class="muted" data-i18n="brand_sub">Minecraft Bedrock • Community Server</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+      <div class="card glass ip" onclick="copyIP()">
+        <p class="label" data-i18n="label_ip">Server IP</p>
+        <div class="value">COOKIEMC.LOL</div>
+        <p class="sub" data-i18n="click_copy">Click to copy</p>
+        <div id="copyMsg" class="toast">Copied!</div>
+      </div>
+
+      <div class="card glass">
+        <p class="label" data-i18n="label_join">Quick Join</p>
+        <a class="join" href="minecraft://?addExternalServer=NOKORMC|cookiemc.lol:25257" data-i18n="join">Bedrock Join</a>
+        <p class="sub" data-i18n="port">Port: 25257</p>
+      </div>
+    </section>
+
+      <div class="shortcuts">
+        <a class="short glass" href="ranks.html"><img src="rank.jpg"><span data-i18n="card_rank">Rank Shop</span></a>
+        <a class="short glass" href="online.html"><img src="map.jpg"><span data-i18n="card_online">Player Online</span></a>
+        <a class="short glass" href="admin.html"><img src="player.jpg">Admin Staft</span></a>
+      </div>
+
+    </section>
+  
+  </main>
+<footer>
+ <p>   <span>© 2024 - 2026 COOKIEMC All Rights Reserved.</span>
+</footer>
+
+  <script src="homes.js"></script>
+
+</body>
+</html>
