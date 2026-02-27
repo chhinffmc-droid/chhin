@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>COOKIEMC Plugins សុវត្តិភាព</title><!-- WEBSITE ICON --><link rel="icon" href="icon.png"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet"><style>
+
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ color:white;
+ overflow-x:hidden;
+}
+
+/* ANIMATED BACKGROUND */
+body::before{
+ content:"";
+ position:fixed;
+ inset:0;
+ background:linear-gradient(270deg,#ff4b75,#6a5cff,#00c9ff);
+ background-size:600% 600%;
+ animation:bgMove 12s ease infinite;
+ z-index:-1;
+}
+
+@keyframes bgMove{
+ 0%{background-position:0% 50%;}
+ 50%{background-position:100% 50%;}
+ 100%{background-position:0% 50%;}
+}
+
+/* HEADER */
+header{
+ text-align:center;
+ padding:40px 10px;
+ font-size:28px;
+ font-weight:800;
+ letter-spacing:1px;
+}
+
+/* ADMIN ICON */
+.admin-icon{
+ position:fixed;
+ top:15px;
+ right:15px;
+ font-size:22px;
+ background:rgba(255,255,255,.2);
+ backdrop-filter:blur(10px);
+ padding:10px 14px;
+ border-radius:10px;
+ cursor:pointer;
+}
+
+/* GRID */
+.grid{
+ max-width:1100px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:25px;
+ padding:20px;
+}
+
+/* CARD */
+.card{
+ background:rgba(255,255,255,.15);
+ backdrop-filter:blur(15px);
+ border-radius:16px;
+ padding:25px;
+ box-shadow:0 10px 30px rgba(0,0,0,.2);
+ transition:.3s;
+}
+
+.card:hover{
+ transform:translateY(-8px);
+}
+
+.download{
+ display:inline-block;
+ margin-top:15px;
+ padding:12px 20px;
+ background:#ff4b75;
+ border-radius:10px;
+ color:white;
+ text-decoration:none;
+ font-weight:600;
+}
+
+/* ADMIN PANEL */
+.admin{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.85);
+ display:none;
+ align-items:center;
+ justify-content:center;
+}
+
+.admin-box{
+ background:#111;
+ padding:25px;
+ border-radius:14px;
+ width:320px;
+ text-align:center;
+}
+
+input{
+ width:100%;
+ padding:10px;
+ margin:8px 0;
+ border-radius:8px;
+ border:none;
+}
+
+button{
+ width:100%;
+ padding:10px;
+ border:none;
+ background:#ff4b75;
+ color:white;
+ border-radius:8px;
+ cursor:pointer;
+}
+
+.plugin-item{
+ background:#222;
+ margin-top:8px;
+ padding:8px;
+ border-radius:6px;
+}
+
+footer{
+ text-align:center;
+ padding:20px;
+ opacity:.8;
+}
+</style></head><body><header>COOKIEMC PLUGINS
+<div style="margin-top:20px; text-align:center;">
+  <a href="homes.html" style="
+      display:inline-block;
+      padding:10px 20px;
+      background:#ff4b75;
+      color:white;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:600;
+  ">⬅️ Back to Home</a>
+</div>
+</header><div class="admin-icon" onclick="openAdmin()">⚙️</div><div class="grid" id="pluginGrid"></div><!-- ADMIN PANEL --><div class="admin" id="adminPanel">
+<div class="admin-box"><div id="loginBox">
+<h3>Admin Login</h3>
+<button onclick="closeAdmin()">Back</button>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+</div><div id="panel" style="display:none;">
+<h3>Upload Plugin</h3><input id="pluginName" placeholder="Plugin Name">
+<input type="file" id="pluginFile"><button onclick="uploadPlugin()">Upload</button>
+
+<div id="pluginList"></div><button onclick="closeAdmin()">Close</button>
+ 
+<script>
+const ADMIN_USER="chhinffmc@gmail.com";
+const ADMIN_PASS="As1122AsChhin";
+
+/* ADMIN OPEN */
+function openAdmin(){
+ adminPanel.style.display="flex";
+}
+function closeAdmin(){
+ adminPanel.style.display="none";
+}
+
+/* LOGIN */
+function login(){
+ if(user.value===ADMIN_USER && pass.value===ADMIN_PASS){
+   loginBox.style.display="none";
+   panel.style.display="block";
+   loadAdmin();
+ }else alert("Wrong login");
+}
+
+/* UPLOAD */
+function uploadPlugin(){
+ let name=pluginName.value;
+ let file=pluginFile.files[0];
+
+ if(!name||!file)return alert("Fill all");
+
+ let url=URL.createObjectURL(file);
+
+ let plugins=JSON.parse(localStorage.getItem("plugins")||"[]");
+
+ plugins.push({
+   name:name,
+   file:url,
+   filename:file.name
+ });
+
+ localStorage.setItem("plugins",JSON.stringify(plugins));
+
+ renderPlugins();
+ loadAdmin();
+}
+
+/* ADMIN LIST */
+function loadAdmin(){
+ let plugins=JSON.parse(localStorage.getItem("plugins")||"[]");
+
+ pluginList.innerHTML="";
+
+ plugins.forEach((p,i)=>{
+  pluginList.innerHTML+=`
+   <div class="plugin-item">
+   ${p.name}
+   <button onclick="removePlugin(${i})">Delete</button>
+   </div>`;
+ });
+}
+
+/* DELETE */
+function removePlugin(i){
+ let plugins=JSON.parse(localStorage.getItem("plugins"));
+ plugins.splice(i,1);
+ localStorage.setItem("plugins",JSON.stringify(plugins));
+ renderPlugins();
+ loadAdmin();
+}
+
+/* SHOW WEBSITE */
+function renderPlugins(){
+ let grid=document.getElementById("pluginGrid");
+ let plugins=JSON.parse(localStorage.getItem("plugins")||"[]");
+
+ grid.innerHTML="";
+
+ plugins.forEach(p=>{
+   grid.innerHTML+=`
+<div class="card">
+ <h3>${p.name}</h3>
+ <button class="download" onclick="downloadFile('${p.file}','${p.filename}')">Download</button>
+</div>`;
+ });
+}
+renderPlugins();
+
+
+function downloadFile(data, filename){
+ const a=document.createElement("a");
+ a.href=data;
+ a.download=filename;
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+}
+</script>
+</body>
+</html>
