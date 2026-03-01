@@ -32,32 +32,33 @@
     <h3 class="store-title"></h3>
 
     <div class="ranks-grid" id="ranksGrid">
-      <article class="card" data-price="3" data-qr="qr.jpg" data-rank="RANK APPLE">
+      <article class="card" data-price="3" data-qr="qr3.jpg" data-rank="RANK APPLE">
         <img src="apple.jpg" alt="APPLE rank">
         <h4>RANK APPLE</h4>
         <div class="price">3$</div>
-        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
-        </article>
+        <button class="buy" type="button">ទិញ</button>
+      </article>
 
-      <article class="card" data-price="5" data-qr="qr.jpg" data-rank="RANK POTATO">
+      <article class="card" data-price="5" data-qr="qr5.jpg" data-rank="RANK POTATO">
         <img src="potato.jpg" alt="MVP rank">
         <h4>RANK POTATO</h4>
         <div class="price">5$</div>
-        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
-        </article>
+        <button class="buy" type="button">ទិញ</button>
+      </article>
 
-      <article class="card" data-price="7" data-qr="qr.jpg" data-rank="RANK CARROT">
+      <article class="card" data-price="7" data-qr="qr7.jpg" data-rank="RANK CARROT">
         <img src="carrot.jpg" alt="King rank">
         <h4>RANK CARROT</h4>
         <div class="price">7$</div>
-        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
-        </article>
+<button class="buy" type="button">ទិញ</button>
+      </article>
 
-      <article class="card" data-price="10" data-qr="qr.jpg" data-rank="RANK COOKIE">
+      <article class="card" data-price="10" data-qr="qr10.jpg" data-rank="RANK COOKIE">
         <img src="cookie.jpg" alt="Master rank">
         <h4>RANK COOKIE</h4>
         <div class="price">10$</div>
-        <a class="buy" href="https://t.me/SOPANHA1213" >Buy Telegram inbex</a>
+<button class="buy" type="button">ទិញ</button>
+      </article>
       </article>
     </div>
   </section>
@@ -71,7 +72,43 @@
       <button class="close" id="modalClose">×</button>
     </div>
 
-       <a href="https://t.me/SOPANHA1213" >Telegram</a>
+       <form id="buyForm" autocomplete="off" novalidate>
+      <div class="row">
+        <input id="mcName" name="mcName" type="text" placeholder="👤 បញ្ចូលឈ្មោះហ្គេមរបស់អ្នក" required>
+      </div>
+      <div class="row">
+        <select id="platform" name="platform" required>
+          <option value="" selected disabled>🎮 ជ្រើសរើសប្រភេទហ្គេម</option>
+          <option>JAVA</option>
+          <option>BEDROCK</option>
+        </select>
+      </div>
+      <div class="row">
+        <select id="gamemode" name="gamemode" required>
+          <option value="" selected disabled>🗺️ ជ្រើសរើស SERVER</option>
+          <option>ECONOMYSMP</option>
+          <option>BOX-PVP</option>
+        </select>
+      </div>
+      <div class="row">
+        <input id="rankField" name="rankField" type="text" readonly placeholder="⭐ Rank">
+      </div>
+      <div class="row">
+        <input id="priceField" name="priceField" type="text" readonly placeholder="💵 តម្លៃ">
+      </div>
+
+      <input id="screenshot_url" name="screenshot_url" type="hidden">
+
+      <div class="pay-section">
+        <h3>សូមបង់ប្រាក់តាម QR Code 💳</h3>
+        <img id="qrImage" class="qr" src="qr.jpg" alt="QR code">
+
+        <div class="row">
+          <label for="screenshot" class="upload-label">📤 ផ្ញើវិក្កយប័ត្របង់លុយនៅខាងក្រោម</label>
+          <input id="screenshot" name="screenshot" type="file" accept="image/*" required>
+        </div>
+
+        <button id="payBtn" class="submit-btn" type="submit" disabled>Pay</button>
       </div>
     </form>
   </div>
@@ -82,7 +119,8 @@
   <div class="success-card">
     <div class="check">✔</div>
     <h3>សូមអគុណ🙏</h3>
-    <p>សំណើរទិញរបស់អ្នកត្រូវបានដាក់ស្នើ។<br>សូមរងចាំ 1 ម៉ោងសម្រាប់ការត្រួតពិនិត្យ។</p>
+    <p>សំណើរទិញរបស់អ្នកត្រូវបានដាក់ស្នើ។<br>សូមរងចាំ 1 ម៉ោងសម្រាប់ការត្រួតពិនិត្យ។ 
+     រងចាំមិនទាន់បាន rank សូមទំទាន់ទំនង @DrSkript | @SOPANHA1213</p>
     <button id="successClose" class="submit-btn">Close</button>
   </div>
 </div>

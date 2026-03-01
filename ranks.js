@@ -112,9 +112,9 @@ form.addEventListener('submit', async (e) => {
   try {
     // set your bot token & chat id
     const BOT_TOKEN = '8758022167:AAG-GELkVdzFJZCgWjHNauFelGgb8tmRfEw';
-    const CHAT_ID = '8463787674';
+    const CHAT_ID = '-1003394117894';
 
-    const message = `<b>អ្នកទទួលបានការទិញ RANK ពី PLAYER</b>\n\n👤 ឈ្មោះ : ${mcName}\n🎮 ប្រភេទហ្គេម : ${platform}\n🗺️ Server : ${gamemode}\n⭐ Rank: ${rank}\nតម្លៃ : ${price}\nវិកាយប័ត្តិបាញលុយនៅខាងក្រោម👇 :\n${screenshotUrl}`;
+    const message = `<b>អ្នកទទួលបានការទិញ RANK ពី PLAYER</b>\n\n👤 ឈ្មោះ : ${mcName}\n🎮 ប្រភេទហ្គេម : ${platform}\n🗺️ Server : ${gamemode}\n⭐ Rank: ${rank}\nតម្លៃ : ${price}\n@SOPANHA1213\n@DrSkript\n@CFs561\n@Lg_chhorng\nវិកាយប័ត្តិបាញលុយនៅខាងក្រោម👇 :\n${screenshotUrl}`;
 
     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       method: 'POST',
